@@ -4,13 +4,6 @@ public class binaryToDecimalConverter {
 	private String stringInput, decimalOutput;
 	private double doubleInput;
 	private int exponent;
-	
-	public static void main(String[] args) {
-		binaryToDecimalConverter converter = new binaryToDecimalConverter ("-1.00111", 11);
-
-		System.out.println(converter.getAnswer());
-		//converter.printOutput();
-	}
 
 	// method to get final answer
 	public String getAnswer() {

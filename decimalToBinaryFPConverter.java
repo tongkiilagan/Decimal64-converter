@@ -5,12 +5,6 @@ public class decimalToBinaryFPConverter {
 	private double doubleInput;
 	private String stringInput, normalizedString, binaryMSD, binaryEPrime, combinationField, exponentContinuation, binaryOutput;
 	
-	public static void main(String[] args) {
-		//input here
-		decimalToBinaryFPConverter converter = new decimalToBinaryFPConverter("-7123645123675431", 15);
-		converter.printAnswer();
-	}
-	
 	public void printAnswer() {
 		// prints binary output
 		System.out.println(this.getAnswer());
