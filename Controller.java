@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.*;
+import java.math.BigInteger;
+
 public class Controller implements ActionListener {
   private GUI gui;
   private String hex_ans, binary_ans;
@@ -15,6 +17,8 @@ public class Controller implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     JButton btn;
     JTextArea txtArea;
+    String mantissa;
+    int exponent;
 
     if(e.getActionCommand().equals("Base 2")) {
       gui.showInterface("Base2");
@@ -32,23 +36,26 @@ public class Controller implements ActionListener {
 
       if(btn.getName().equals("Base10_calculate")) {
         gui.showInterface("Answer");
-        binary_ans = "0000000000000000000000000000000000000000011111111111111111111111";
-        hex_ans= "0000FFFF0000AAAA";
+        mantissa = gui.getTextField("Base10_mantissa").getText();
+        exponent = Integer.parseInt(gui.getTextField("Base10_exponent").getText());
+        decimalToBinaryFPConverter dbfpc = new decimalToBinaryFPConverter(mantissa, exponent);
+        binary_ans = dbfpc.getAnswer();
+        hex_ans = new BigInteger(binary_ans.replaceAll("\\s+", ""), 2).toString(16);
+
         txtArea.setText(binary_ans);
       }
       else 
       if(btn.getName().equals("Base2_calculate")) {
         gui.showInterface("Answer");
-        binary_ans = "1111111111111111111111111110111111111111111111111111111111101111";
-        hex_ans = "FFFFFFFFFFFFFFFF";
+        mantissa = gui.getTextField("Base2_mantissa").getText();
+        exponent = Integer.parseInt(gui.getTextField("Base2_exponent").getText());
+        binaryToDecimalConverter bdc = new binaryToDecimalConverter(mantissa, exponent);
+        decimalToBinaryFPConverter dbfpc = new decimalToBinaryFPConverter(bdc.getAnswer(), 0);
+        binary_ans = dbfpc.getAnswer();
+        hex_ans = new BigInteger(binary_ans.replaceAll("\\s+", ""), 2).toString(16);
+
         txtArea.setText(binary_ans);        
       }
-       /*
-          TODO: 
-          1. Perform calculations depending if Base 10 or 2
-          2. Store both answers to hex_ans and binary_ans
-          2. Display as binary (as default)
-       */
     }
     else 
     if(e.getActionCommand().equals("hex")) {

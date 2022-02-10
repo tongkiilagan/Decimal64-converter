@@ -268,6 +268,13 @@ public class GUI extends JFrame{
 		
 		return null;
 	}
+	public JTextField getTextField(String field) {
+		for(JTextField fields: arrTextFields)
+			if(fields.getName().equals(field))
+				return fields;
+		
+		return null;
+	}  
   public JButton getButton(String btn)
 	{
 		for(JButton btns: arrButtons)
