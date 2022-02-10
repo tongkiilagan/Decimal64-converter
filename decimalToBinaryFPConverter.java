@@ -8,18 +8,23 @@ public class decimalToBinaryFPConverter {
 	public static void main(String[] args) {
 		//input here
 		decimalToBinaryFPConverter converter = new decimalToBinaryFPConverter("-7123645123675431", 15);
-		converter.initialize();
 		converter.printAnswer();
 	}
 	
 	public void printAnswer() {
 		// prints binary output
-		System.out.println(this.getBinaryOutput());
+		System.out.println(this.getAnswer());
 		
 		// prints the 16digit string
 		System.out.println(this.getNormalizedString());
 	}
 
+	public String getAnswer() {
+		this.initialize();
+		return this.getBinaryOutput();
+	}
+		
+	
 	public decimalToBinaryFPConverter(String base, int exponent) {
 		this.stringInput = base;
 		this.exponent = exponent;
