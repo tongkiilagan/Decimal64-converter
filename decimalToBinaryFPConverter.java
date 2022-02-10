@@ -7,12 +7,13 @@ public class decimalToBinaryFPConverter {
 	
 	public static void main(String[] args) {
 		//input here
-		decimalToBinaryFPConverter converter = new decimalToBinaryFPConverter("7123645123675431", 15);
+		decimalToBinaryFPConverter converter = new decimalToBinaryFPConverter("-7123645123675431", 15);
 		converter.initialize();
 		converter.printAnswer();
 	}
 	
 	public void printAnswer() {
+		// prints binary output
 		System.out.println(this.getBinaryOutput());
 		
 		// prints the 16digit string
