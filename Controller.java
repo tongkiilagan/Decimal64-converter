@@ -37,7 +37,7 @@ public class Controller implements ActionListener {
         mantissa = gui.getTextField("Base10_mantissa").getText();
         exponent = Integer.parseInt(gui.getTextField("Base10_exponent").getText());
 
-        if(mantissa.replace("-", "").length() > 16) {
+        if(mantissa.replace("-", "").replace(".", "").length() > 16) {
           if(!gui.getBox("rounding_fields").getSelectedItem().equals("--Select Rounding Method--")) {
             gui.showInterface("Answer");
             rounding_field = (String) gui.getBox("rounding_fields").getSelectedItem();
