@@ -5,11 +5,6 @@ public class DenselyPackedBCDConverter{
         printBCD(convertBCD(s));
     }
 
-    public static void main(String[] args)
-    {
-       convertBCD("000");
-    }
-
     /* Prints the converted densely packed BCD */
 	public static void printBCD (String s)
     {
@@ -37,9 +32,6 @@ public class DenselyPackedBCDConverter{
     		n /= 10;
     	}
 
-        System.out.println(BCD);
-
-
         if (m < 100)
         {
             BCD = "0000".concat(BCD);
@@ -49,8 +41,7 @@ public class DenselyPackedBCDConverter{
                 BCD = "000000000000";
         }
 
-        System.out.println(BCD);
-
+        //System.out.println(BCD);
     	splitBCD = BCD.split("");
     	dense = String.join("", denselyPack (splitBCD));
     	return dense;
@@ -66,6 +57,16 @@ public class DenselyPackedBCDConverter{
     	i[0] = Integer.parseInt(bcd[0]);
     	i[1] = Integer.parseInt(bcd[4]);
     	i[2] = Integer.parseInt(bcd[8]);
+
+        dense[0] = bcd[0];
+        dense[1] = bcd[4];
+        dense[2] = bcd[8];
+
+        /*
+        System.out.println(i[0]);
+        System.out.println(i[1]);
+        System.out.println(i[2]);
+        */
 
     	if (i[0] == 0 && i[1] == 0 && i[2] == 0)
     	{
@@ -156,7 +157,7 @@ public class DenselyPackedBCDConverter{
     
     	}
 
-    	else if (i[0] == 1 && i[1] == 1 && i[2] == 1)
+    	else if (i[0] == 1 && i[1] == 1 && i[2] == 0)
     	{
     		dense[9] = "1";
     		dense[5] = bcd[3];
@@ -165,7 +166,7 @@ public class DenselyPackedBCDConverter{
        		dense[3] = bcd[9];
         	dense[4] = bcd[10];
         	dense[6] = "0";
-        	dense[7] = "1";
+        	dense[7] = "0";
         	dense[10] = "1";
         	dense[11] = "1";
     
