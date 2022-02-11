@@ -37,7 +37,7 @@ public class Controller implements ActionListener {
         mantissa = gui.getTextField("Base10_mantissa").getText();
         exponent = Integer.parseInt(gui.getTextField("Base10_exponent").getText());
 
-        if(mantissa.length() > 16) {
+        if(mantissa.replace("-", "").length() > 16) {
           if(!gui.getBox("rounding_fields").getSelectedItem().equals("--Select Rounding Method--")) {
             gui.showInterface("Answer");
             rounding_field = (String) gui.getBox("rounding_fields").getSelectedItem();
@@ -62,7 +62,7 @@ public class Controller implements ActionListener {
               sb.append(dbfpc.getAnswer());
               if(sb.toString() != "Infinity" || sb.toString() != "NaN") { 
                 normalizedNum = dbfpc.getNormalizedString();
-                String bcd = getFullDenselyPackedBCD(normalizedNum);
+                String bcd = getFullDenselyPackedBCD(normalizedNum.replace("-", ""));
                 sb.append(" ");
                 sb.append(bcd);
                 hex_ans = new BigInteger(sb.toString().replaceAll("\\s+", ""), 2).toString(16).toUpperCase();
@@ -82,7 +82,7 @@ public class Controller implements ActionListener {
           sb.append(dbfpc.getAnswer());
           if(sb.toString() != "Infinity" || sb.toString() != "NaN") { 
             normalizedNum = dbfpc.getNormalizedString();
-            String bcd = getFullDenselyPackedBCD(normalizedNum);
+            String bcd = getFullDenselyPackedBCD(normalizedNum.replace("-", ""));
             sb.append(" ");
             sb.append(bcd);
             hex_ans = new BigInteger(sb.toString().replaceAll("\\s+", ""), 2).toString(16).toUpperCase();
@@ -132,7 +132,7 @@ public class Controller implements ActionListener {
     bcd3= str.substring(7, 10);
     bcd4=str.substring(10, 13);
     bcd5=str.substring(13, 16);
-    
+    System.out.println("BCD3: " + str);
     sb.append(DenselyPackedBCDConverter.convertBCD(bcd1));
     sb.append(" ");
     sb.append(DenselyPackedBCDConverter.convertBCD(bcd2));
