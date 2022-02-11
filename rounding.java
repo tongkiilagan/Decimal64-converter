@@ -1,16 +1,12 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-public class rounding {
+public class Rounding {
     private int yourScale = 16;
     private String num;
 
-    rounding(String num){
+    public Rounding(String num){
         this.num = num;
     }
-
-
-
-    
     String round(int choice){
         char ch = num.charAt(0);
         if(ch == '-'){

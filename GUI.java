@@ -13,6 +13,7 @@ public class GUI extends JFrame{
 	private ArrayList<JLabel> arrLabels;
 	private ArrayList<JTextArea> arrTextAreas;
 	private ArrayList<JTextField> arrTextFields;
+  private ArrayList<JComboBox> arrBoxes;
   public GUI() {
     super("Decimal 64 Floating Point Converter");
 
@@ -21,7 +22,8 @@ public class GUI extends JFrame{
 		arrLabels = new ArrayList<JLabel>();
 		arrTextFields = new ArrayList<JTextField>();
 		arrTextAreas = new ArrayList<JTextArea>();
-    
+    arrBoxes = new ArrayList<JComboBox>();
+
     buttonPanel = new JPanel();
     buttonPanel.setLayout(cards);
     interfacePanel = new JPanel();
@@ -117,6 +119,7 @@ public class GUI extends JFrame{
     String[] rounding_fields = {"--Select Rounding Method--", "Towards 0", "Ceiling", "Floor", "RTN-TE"};
     box = new JComboBox<String>(rounding_fields);
     box.setName("rounding_fields");
+    arrBoxes.add(box);
     gbc.gridx = 0;
 		gbc.gridy = 2;
 		panel2.add(box, gbc);
@@ -236,6 +239,13 @@ public class GUI extends JFrame{
 		
 		return null;
 	}
+	public JComboBox getBox(String box){
+		for(JComboBox boxes: arrBoxes)
+			if(boxes.getName().equals(box))
+				return boxes;
+		
+		return null;
+	}  
   public void clearTextFields() {
 		for(JTextField txtField: arrTextFields)
 			txtField.setText("");    

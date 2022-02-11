@@ -123,7 +123,6 @@ public class DenselyPackedBCDConverter{
         	dense[7] = bcd[6];
         	dense[10] = "1";
         	dense[11] = "0";
-        	System.out.println("Hello");
     
     	}
 

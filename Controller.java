@@ -5,7 +5,7 @@ import java.math.BigInteger;
 
 public class Controller implements ActionListener {
   private GUI gui;
-  private String hex_ans, binary_ans, normalizedNum;
+  private String hex_ans, binary_ans, normalizedNum, rounding_field;
   private StringBuilder sb;
 	public Controller(GUI gui) {
 		
@@ -16,12 +16,16 @@ public class Controller implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     JButton btn;
     JTextArea txtArea;
+    JFrame frame;
     String mantissa;
     int exponent;
 
     if(e.getActionCommand().equals("Base 10")) {
       gui.showInterface("Base10");
       gui.clearTextFields();
+      btn = gui.getButton("Save to text");
+      btn.setText("Save to text");
+      btn.setEnabled(true);      
     }
     else 
     if(e.getActionCommand().equals("Calculate")) {
@@ -30,30 +34,69 @@ public class Controller implements ActionListener {
 
       if(btn.getName().equals("Base10_calculate")) {
         sb = new StringBuilder();
-        gui.showInterface("Answer");
         mantissa = gui.getTextField("Base10_mantissa").getText();
         exponent = Integer.parseInt(gui.getTextField("Base10_exponent").getText());
 
         if(mantissa.length() > 16) {
-          System.out.println("str length > 16");
-          Rounding round = new Rounding(mantissa);
-          mantissa = round.round();
-          System.out.println(mantissa + " [debug] mantissa");
+          if(!gui.getBox("rounding_fields").getSelectedItem().equals("--Select Rounding Method--")) {
+            gui.showInterface("Answer");
+            rounding_field = (String) gui.getBox("rounding_fields").getSelectedItem();
+            System.out.println("str length > 16, mantissa: " + mantissa);
+            Rounding round = new Rounding(mantissa);
+            if(rounding_field.equals("Towards 0")) {
+              mantissa = round.round(1);
+            }
+            else 
+            if(rounding_field.equals("Ceiling")) {
+              mantissa = round.round(2);
+            }
+            else
+            if(rounding_field.equals("Floor")) {
+              mantissa = round.round(3);
+            }
+            else
+            if(rounding_field.equals("RTN-TE")) {
+              mantissa = round.round(4);
+            }
+              decimalToBinaryFPConverter dbfpc = new decimalToBinaryFPConverter(mantissa, exponent);
+              sb.append(dbfpc.getAnswer());
+              if(sb.toString() != "Infinity" || sb.toString() != "NaN") { 
+                normalizedNum = dbfpc.getNormalizedString();
+                String bcd = getFullDenselyPackedBCD(normalizedNum);
+                sb.append(" ");
+                sb.append(bcd);
+                hex_ans = new BigInteger(sb.toString().replaceAll("\\s+", ""), 2).toString(16).toUpperCase();
+                binary_ans = sb.toString();
+                txtArea.setText(binary_ans);
+              } else {
+                binary_ans = sb.toString();
+                hex_ans = sb.toString();
+              }     
+          } else {
+            frame = new JFrame();
+            JOptionPane.showMessageDialog(frame, "Please enter a rounding method");
+          }
+        } else {
+          gui.showInterface("Answer");
+          decimalToBinaryFPConverter dbfpc = new decimalToBinaryFPConverter(mantissa, exponent);
+          sb.append(dbfpc.getAnswer());
+          if(sb.toString() != "Infinity" || sb.toString() != "NaN") { 
+            normalizedNum = dbfpc.getNormalizedString();
+            String bcd = getFullDenselyPackedBCD(normalizedNum);
+            sb.append(" ");
+            sb.append(bcd);
+            hex_ans = new BigInteger(sb.toString().replaceAll("\\s+", ""), 2).toString(16).toUpperCase();
+            binary_ans = sb.toString();
+            txtArea.setText(binary_ans);
+          } else {
+            binary_ans = sb.toString();
+            hex_ans = sb.toString();
+          }
         }
-        decimalToBinaryFPConverter dbfpc = new decimalToBinaryFPConverter(mantissa, exponent);
-        sb.append(dbfpc.getAnswer());
-        normalizedNum = dbfpc.getNormalizedString();
-        String bcd = getFullDenselyPackedBCD(normalizedNum);
-        sb.append(" ");
-        sb.append(bcd);
-        hex_ans = new BigInteger(sb.toString().replaceAll("\\s+", ""), 2).toString(16).toUpperCase();
-        binary_ans = sb.toString();
-        txtArea.setText(binary_ans);
       }
     }
     else 
     if(e.getActionCommand().equals("hex")) {
-      // TODO: change the JLabel to hex_ans 
       txtArea = gui.getTextArea("final_ans");
       txtArea.setText(hex_ans);
       btn = gui.getButton("Save to text");
@@ -62,7 +105,6 @@ public class Controller implements ActionListener {
     }
     else 
     if(e.getActionCommand().equals("binary")) {
-      // TODO: change the JLabel to binary_ans
       txtArea = gui.getTextArea("final_ans");
       txtArea.setText(binary_ans);
       btn = gui.getButton("Save to text");
@@ -71,7 +113,6 @@ public class Controller implements ActionListener {
     }    
     else 
     if(e.getActionCommand().equals("Save to text")) {
-      // TODO: get JLabel and append it to output.txt
       txtArea = gui.getTextArea("final_ans");
       writeFile(txtArea.getText());
       btn = (JButton) e.getSource();
