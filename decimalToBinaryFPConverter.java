@@ -68,7 +68,7 @@ public class decimalToBinaryFPConverter {
 		}
 	}
 
-	private String getNormalizedString() {
+	public String getNormalizedString() {
 		return normalizedString;
 	}
 	

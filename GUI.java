@@ -13,7 +13,6 @@ public class GUI extends JFrame{
 	private ArrayList<JLabel> arrLabels;
 	private ArrayList<JTextArea> arrTextAreas;
 	private ArrayList<JTextField> arrTextFields;
-
   public GUI() {
     super("Decimal 64 Floating Point Converter");
 
@@ -29,25 +28,24 @@ public class GUI extends JFrame{
     interfacePanel.setLayout(cards);   
 
     setLayout(new GridBagLayout());
-    setSize(600, 250);
+    setSize(600, 275);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     init_emptyPanel();
     init_btn_controls();
     init_base10_fields();
-    init_base2_fields();
     init_answer_panel();
 
     gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		buttonPanel.setPreferredSize(new Dimension(200, 150));
+		buttonPanel.setPreferredSize(new Dimension(200, 175));
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		add(buttonPanel, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		interfacePanel.setPreferredSize(new Dimension(300, 150));
+		interfacePanel.setPreferredSize(new Dimension(300, 175));
 		interfacePanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		add(interfacePanel, gbc);
 
@@ -62,22 +60,13 @@ public class GUI extends JFrame{
 		panel.add(Box.createRigidArea(new Dimension(0, 15)));
 		
 		btn = new JButton();
-		btn.setName("Base 2");
-		btn.setText("Base 2");
-		btn.setAlignmentX(CENTER_ALIGNMENT);
-		arrButtons.add(btn);
-		panel.add(btn);
-		
-		panel.add(Box.createRigidArea(new Dimension(0, 5)));
-		
-		btn = new JButton();
 		btn.setName("Base 10");
 		btn.setText("Base 10");
 		btn.setAlignmentX(CENTER_ALIGNMENT);
 		arrButtons.add(btn);
 		panel.add(btn); 
 		
-		panel.add(Box.createRigidArea(new Dimension(0, 5)));
+		panel.add(Box.createRigidArea(new Dimension(0, 70)));
 		
 		btn = new JButton();
 		btn.setName("Exit");
@@ -96,13 +85,14 @@ public class GUI extends JFrame{
 		JLabel lbl;
 		JTextField txtField;
 		JButton btn;
+    JComboBox<String> box;
 		
 		panel1.setLayout(new BorderLayout());
 		panel2.setLayout(new GridBagLayout());
 		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		txtField = new JTextField(13);
+		txtField = new JTextField(15);
 		txtField.setName("Base10_mantissa");
 		arrTextFields.add(txtField);
 		panel2.add(txtField, gbc);
@@ -119,9 +109,20 @@ public class GUI extends JFrame{
 		txtField.setName("Base10_exponent");
 		arrTextFields.add(txtField);
 		panel2.add(txtField, gbc);
+
+    gbc.gridx = 0;
+		gbc.gridy = 1;
+		panel2.add(Box.createRigidArea(new Dimension(0, 15)), gbc);
 		
+    String[] rounding_fields = {"--Select Rounding Method--", "Towards 0", "Ceiling", "Floor", "RTN-TE"};
+    box = new JComboBox<String>(rounding_fields);
+    box.setName("rounding_fields");
+    gbc.gridx = 0;
+		gbc.gridy = 2;
+		panel2.add(box, gbc);
+
 		panel1.add(panel2, BorderLayout.CENTER);
-		
+
 		panel2 = new JPanel();
 		panel2.setLayout(new FlowLayout());
 		btn = new JButton();
@@ -138,55 +139,6 @@ public class GUI extends JFrame{
 
 		panel1.setName("Base10");
 		interfacePanel.add(panel1, "Base10");
-	}
-	public void init_base2_fields() {
-		JPanel panel1 = new JPanel();
-		JPanel panel2 = new JPanel();
-		JLabel lbl;
-		JTextField txtField;
-		JButton btn;
-		
-		panel1.setLayout(new BorderLayout());
-		panel2.setLayout(new GridBagLayout());
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		txtField = new JTextField(13);
-		txtField.setName("Base2_mantissa");
-		arrTextFields.add(txtField);
-		panel2.add(txtField, gbc);
-
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		lbl = new JLabel();
-		lbl.setText("x2^");
-		panel2.add(lbl, gbc);
-
-    gbc.gridx = 2;
-		gbc.gridy = 0;
-		txtField = new JTextField(3);
-		txtField.setName("Base2_exponent");
-		arrTextFields.add(txtField);
-		panel2.add(txtField, gbc);
-		
-		panel1.add(panel2, BorderLayout.CENTER);
-		
-		panel2 = new JPanel();
-		panel2.setLayout(new FlowLayout());
-		btn = new JButton();
-		btn.setName("Base2_calculate");
-		btn.setText("Calculate");
-		arrButtons.add(btn);
-		panel2.add(btn);
-		
-		panel1.add(panel2, BorderLayout.SOUTH);
-
-    lbl = new JLabel();
-    lbl.setText("Base 2");
-    panel1.add(lbl, BorderLayout.NORTH);
-
-		panel1.setName("Base2");
-		interfacePanel.add(panel1, "Base2");
 	}
 	public void init_answer_panel() {
     JPanel panel1 = new JPanel();
@@ -251,7 +203,9 @@ public class GUI extends JFrame{
 	public void addListener(ActionListener al) {
 		for(JButton btn: arrButtons)
 			btn.addActionListener(al);
-	}
+    for(JTextField txt: arrTextFields)
+      txt.addActionListener(al);
+  }
   public void showInterface(String interface_name) {
     cards.show(interfacePanel, interface_name);
   }
@@ -272,7 +226,6 @@ public class GUI extends JFrame{
 		for(JTextField fields: arrTextFields)
 			if(fields.getName().equals(field))
 				return fields;
-		
 		return null;
 	}  
   public JButton getButton(String btn)

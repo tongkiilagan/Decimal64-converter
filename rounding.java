@@ -1,11 +1,11 @@
 import java.math.BigDecimal;
 import java.util.Scanner;
 import java.math.RoundingMode;
-public class rounding {
+public class Rounding {
     private int yourScale = 16;
     private String num;
 
-    rounding(String num){
+    public Rounding(String num){
         this.num = num;
     }
 

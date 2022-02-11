@@ -1,13 +1,12 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import java.io.*;
 import java.math.BigInteger;
 
 public class Controller implements ActionListener {
   private GUI gui;
-  private String hex_ans, binary_ans;
+  private String hex_ans, binary_ans, normalizedNum;
+  private StringBuilder sb;
 	public Controller(GUI gui) {
 		
 		this.gui = gui;
@@ -20,11 +19,6 @@ public class Controller implements ActionListener {
     String mantissa;
     int exponent;
 
-    if(e.getActionCommand().equals("Base 2")) {
-      gui.showInterface("Base2");
-      gui.clearTextFields();
-    } 
-    else 
     if(e.getActionCommand().equals("Base 10")) {
       gui.showInterface("Base10");
       gui.clearTextFields();
@@ -35,26 +29,26 @@ public class Controller implements ActionListener {
       txtArea = gui.getTextArea("final_ans");
 
       if(btn.getName().equals("Base10_calculate")) {
+        sb = new StringBuilder();
         gui.showInterface("Answer");
         mantissa = gui.getTextField("Base10_mantissa").getText();
         exponent = Integer.parseInt(gui.getTextField("Base10_exponent").getText());
+
+        if(mantissa.length() > 16) {
+          System.out.println("str length > 16");
+          Rounding round = new Rounding(mantissa);
+          mantissa = round.round();
+          System.out.println(mantissa + " [debug] mantissa");
+        }
         decimalToBinaryFPConverter dbfpc = new decimalToBinaryFPConverter(mantissa, exponent);
-        binary_ans = dbfpc.getAnswer();
-        hex_ans = new BigInteger(binary_ans.replaceAll("\\s+", ""), 2).toString(16);
-
+        sb.append(dbfpc.getAnswer());
+        normalizedNum = dbfpc.getNormalizedString();
+        String bcd = getFullDenselyPackedBCD(normalizedNum);
+        sb.append(" ");
+        sb.append(bcd);
+        hex_ans = new BigInteger(sb.toString().replaceAll("\\s+", ""), 2).toString(16).toUpperCase();
+        binary_ans = sb.toString();
         txtArea.setText(binary_ans);
-      }
-      else 
-      if(btn.getName().equals("Base2_calculate")) {
-        gui.showInterface("Answer");
-        mantissa = gui.getTextField("Base2_mantissa").getText();
-        exponent = Integer.parseInt(gui.getTextField("Base2_exponent").getText());
-        binaryToDecimalConverter bdc = new binaryToDecimalConverter(mantissa, exponent);
-        decimalToBinaryFPConverter dbfpc = new decimalToBinaryFPConverter(bdc.getAnswer(), 0);
-        binary_ans = dbfpc.getAnswer();
-        hex_ans = new BigInteger(binary_ans.replaceAll("\\s+", ""), 2).toString(16);
-
-        txtArea.setText(binary_ans);        
       }
     }
     else 
@@ -89,8 +83,26 @@ public class Controller implements ActionListener {
       System.exit(0);
     }
   }
-  public void displayAnswer() {
+  public String getFullDenselyPackedBCD(String str) {
+    String bcd1, bcd2, bcd3, bcd4, bcd5;
+    StringBuilder sb = new StringBuilder();
+    bcd1=str.substring(1, 4);
+    bcd2=str.substring(4, 7);
+    bcd3= str.substring(7, 10);
+    bcd4=str.substring(10, 13);
+    bcd5=str.substring(13, 16);
+    
+    sb.append(DenselyPackedBCDConverter.convertBCD(bcd1));
+    sb.append(" ");
+    sb.append(DenselyPackedBCDConverter.convertBCD(bcd2));
+    sb.append(" ");
+    sb.append(DenselyPackedBCDConverter.convertBCD(bcd3));
+    sb.append(" ");
+    sb.append(DenselyPackedBCDConverter.convertBCD(bcd4));
+    sb.append(" ");
+    sb.append(DenselyPackedBCDConverter.convertBCD(bcd5));
 
+    return sb.toString();
   }
   public static void writeFile(String str) {
     try {
