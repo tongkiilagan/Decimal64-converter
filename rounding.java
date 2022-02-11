@@ -1,15 +1,17 @@
 import java.math.BigDecimal;
-import java.util.Scanner;
 import java.math.RoundingMode;
-public class Rounding {
+public class rounding {
     private int yourScale = 16;
     private String num;
 
-    public Rounding(String num){
+    rounding(String num){
         this.num = num;
     }
 
-    String round(){
+
+
+    
+    String round(int choice){
         char ch = num.charAt(0);
         if(ch == '-'){
             num = num.replace("-", "");
@@ -39,15 +41,12 @@ public class Rounding {
 
         BigDecimal bd1 = new BigDecimal(num);
         if(withDecimal==1){
-            System.out.println("select rounding methods");
-            System.out.println("1 - Round towards 0");
-            System.out.println("2 - Round Up");
-            System.out.println("3 - Round Down");
-            System.out.println("4 - Nearest Ties Even");
-            Scanner scan = new Scanner(System.in);
-            int choice = scan.nextInt();
-            scan.close();
-
+            //System.out.println("select rounding methods");
+            //System.out.println("1 - Round towards 0");
+            //System.out.println("2 - Round Up");
+            //System.out.println("3 - Round Down");
+            //System.out.println("4 - Nearest Ties Even");
+        
             switch (choice) {
                 case 1:
                     System.out.println(bd1.setScale(yourScale, RoundingMode.DOWN));
