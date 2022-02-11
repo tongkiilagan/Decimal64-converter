@@ -4,6 +4,12 @@ public class DenselyPackedBCDConverter{
     DenselyPackedBCDConverter(String s){
         printBCD(convertBCD(s));
     }
+
+    public static void main(String[] args)
+    {
+       convertBCD("000");
+    }
+
     /* Prints the converted densely packed BCD */
 	public static void printBCD (String s)
     {
@@ -31,12 +37,20 @@ public class DenselyPackedBCDConverter{
     		n /= 10;
     	}
 
-    if (m < 100)
-    {
-        BCD = "0000".concat(BCD);
-        if(m < 10)
+        System.out.println(BCD);
+
+
+        if (m < 100)
+        {
             BCD = "0000".concat(BCD);
-    }
+            if(m < 10)
+                BCD = "0000".concat(BCD);
+            if(m == 0)
+                BCD = "000000000000";
+        }
+
+        System.out.println(BCD);
+
     	splitBCD = BCD.split("");
     	dense = String.join("", denselyPack (splitBCD));
     	return dense;
