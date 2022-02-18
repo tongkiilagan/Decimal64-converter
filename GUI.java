@@ -147,6 +147,7 @@ public class GUI extends JFrame{
     JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
 		JLabel lbl;
+    JTextField txtField;
 		JButton btn;
     JTextArea txtArea;
     JScrollPane jsp;
@@ -154,6 +155,13 @@ public class GUI extends JFrame{
 		panel1.setLayout(new BorderLayout());
 		panel2.setLayout(new FlowLayout());
 
+    lbl = new JLabel("Rounded/Normalized output: ");
+    panel2.add(lbl);
+    txtField = new JTextField(15);
+    txtField.setName("normalized_output");
+    txtField.setEditable(false);
+    arrTextFields.add(txtField);
+    panel2.add(txtField);
 		txtArea = new JTextArea(4,20);
 		jsp = new JScrollPane(txtArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 						  	          JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

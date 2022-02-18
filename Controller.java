@@ -16,6 +16,7 @@ public class Controller implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     JButton btn;
     JTextArea txtArea;
+    JTextField txtField;
     JFrame frame;
     String mantissa;
     int exponent;
@@ -58,6 +59,8 @@ public class Controller implements ActionListener {
             if(rounding_field.equals("RTN-TE")) {
               mantissa = round.round(4);
             }
+              txtField = gui.getTextField("normalized_output");
+              txtField.setText(mantissa);
               decimalToBinaryFPConverter dbfpc = new decimalToBinaryFPConverter(mantissa, exponent);
               sb.append(dbfpc.getAnswer());
               if(sb.toString() != "Infinity" || sb.toString() != "NaN") { 
@@ -77,11 +80,13 @@ public class Controller implements ActionListener {
             JOptionPane.showMessageDialog(frame, "Please enter a rounding method");
           }
         } else {
+          txtField = gui.getTextField("normalized_output");
           gui.showInterface("Answer");
           decimalToBinaryFPConverter dbfpc = new decimalToBinaryFPConverter(mantissa, exponent);
           sb.append(dbfpc.getAnswer());
           if(sb.toString() != "Infinity" || sb.toString() != "NaN") { 
             normalizedNum = dbfpc.getNormalizedString();
+            txtField.setText(normalizedNum);
             String bcd = getFullDenselyPackedBCD(normalizedNum.replace("-", ""));
             sb.append(" ");
             sb.append(bcd);
